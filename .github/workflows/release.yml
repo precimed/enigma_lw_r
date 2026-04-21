@@ -1,0 +1,48 @@
+name: Create release on tag
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Ensure tag commit is on main
+        run: |
+          git fetch origin main:refs/remotes/origin/main
+          git merge-base --is-ancestor "$GITHUB_SHA" "origin/main"
+
+      - name: Check version matches tag
+        run: |
+          export TAG_VERSION="${GITHUB_REF_NAME#v}"
+          python - <<'PY'
+          import pathlib
+          import os
+
+          expected = os.environ["TAG_VERSION"]
+          values = {}
+          exec(pathlib.Path("version/version.py").read_text(), None, values)
+          actual = values["VERSION"]
+
+          if actual != expected:
+              raise SystemExit(
+                  f"version/version.py VERSION={actual!r} "
+                  f"does not match tag {expected!r}"
+              )
+          PY
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true

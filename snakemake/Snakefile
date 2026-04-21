@@ -1,0 +1,11 @@
+rule hello_world:
+    input:
+        input_file="../scripts/hello_world.py"
+    output:
+        output_file="hello_world.txt"
+    singularity:
+        "docker://ghcr.io/precimed/container_template"
+    shell:
+        """
+        python3 {input.input_file} > {output.output_file}
+        """
