@@ -52,11 +52,7 @@ jobs:
           file:
             ./dockerfiles/enigma_lw_r/Dockerfile
 
-      - name: Run unit tests I
-        run: |
-          docker run --rm -v ${{ github.workspace }}:/home ${{ env.LATEST_TAG }} py.test -v tests
-      
-      - name: Run unit tests II
+      - name: Run unit tests
         run: |
           pip install -r test-requirements.txt
           py.test -v tests
