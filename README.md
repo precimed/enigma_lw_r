@@ -1,25 +1,7 @@
 # enigma_lw_r project
 
-README info goes here. Modify for your own project's needs.
-
-# Important! - post initial setup steps
-
-After setting up your project from the template, add files, commit and push the changes after running the setup script (`scripts/init.py`):
-
-```
-git add <file1> <file2> ...
-git commit -a -m "initial setup"
-git push
-```
-
-The remaining codes may then be added to and be modified further to suit the requirements of the `<enigma_lw_r>` project. 
-
-# Important! - Set up Git LFS
-
-Container files may get large and one should never add large binary files (.sif, .zip, .tar.gz, .mat, .dat, etc.) in [git](https://git-scm.com) repositories directly, mainly files that can be parsed as raw text files (code files, etc.).
-[**Git Large File Storage** (LFS)](https://git-lfs.github.com) should be used instead.
-Before adding new files to this project after initialization (running `python scripts/init.py`), go through step 1-3 on the Git LFS [homepage](https://git-lfs.github.com).
-Revise the `<enigma_lw_r>/.gitattributes` file as necessary. Some common file formats has been added already.
+Lightweight R container build for Enigma work, based on the [Rocker project](https://rocker-project.org/images/versioned/rstudio.html) rocker/tidyverse:4.3.1 image, with some additional tools and packages added. 
+Refer to the Rocker project for more information on the base image and included tools/packages, and to the [Dockerfile](./docker/dockerfiles/enigma_lw_r/Dockerfile) for the additional tools/packages included in this container build.
 
 ## Build status
 
@@ -32,7 +14,7 @@ Revise the `<enigma_lw_r>/.gitattributes` file as necessary. Some common file fo
 
 ## Description of available containers
 
-* ``enigma_lw_r`` - a hello-world introductory container setup
+* ``enigma_lw_r`` - a R container setup
 
 ## Software versions
 
@@ -66,10 +48,9 @@ git lfs pull  # pull "large" files
 To obtain updated versions of the Singularity Image Format (.sif) container file `, issue
 
 ```bash
-cd path/to/repositories/enigma_lw_r/singularity
+cd path/to/repositories/enigma_lw_r/containers
 mv enigma_lw_r.sif enigma_lw_r.sif.old  # optional, just rename the old(er) file
-apptainer pull enigma_lw_r.sif docker://ghcr.io/precimed/enigma_lw_r:<tag>  # or
-singularity pull enigma_lw_r.sif docker://ghcr.io/precimed/enigma_lw_r:<tag> # or 
+apptainer pull enigma_lw_r.sif docker://ghcr.io/precimed/enigma_lw_r:<tag>  # or 
 oras pull ghcr.io/precimed/enigma_lw_r_sif:<tag>
 ```
 
@@ -92,7 +73,7 @@ Functionally, the Docker image is equivalent to the Singularity container, but n
 Please refer to [docs.docker.com](https://docs.docker.com) for more information.
 
 > [!NOTE] Note that the provided Docker image may not support all CPUs, and may not be able to run on all systems via CPU virtualization.
-> An option may be to build the Docker image on the host machine (e.g., M1/M2 Macs, older Intel CPUs), as:
+> An option may be to build the Docker image on the host machine (e.g., M1/M2 Macs, older Intel/AMD CPUs), as:
 >
 >```bash
 >docker build --platform=linux/amd64 -t ghcr.io/precimed/enigma_lw_r -f dockerfiles/enigma_lw_r/Dockerfile .
@@ -104,13 +85,13 @@ Example of using the Docker image:
 #!/bin/bash
 # define environment variables:
 export IMAGE="ghcr.io/precimed/enigma_lw_r:latest"  # adapt as necessary
-# shortcuts for Python and interactive shell:
-export PYTHON="docker run --platform=linux/amd64 --rm -v ${PWD}:/home -w/home --entrypoint=python ${IMAGE}"
+# shortcuts for R and interactive shell:
+export R="docker run --platform=linux/amd64 --rm -v ${PWD}:/home -w/home --entrypoint=R ${IMAGE}"
 export ISHELL="docker run --platform=linux/amd64 --rm -it -v ${PWD}:/home -w/home --entrypoint=bash ${IMAGE}"
 
-# invoke Python help/list local directory
-$PYTHON --help
-$PYTHON -c "import os; print(os.listdir())"
+# invoke R help/list local directory
+$R --help
+$R -e "list.files()"
 ```
 
 ### Systems without internet access
@@ -129,12 +110,11 @@ tar --exclude=".git/*" -cvf enigma_lw_r_$SHA.tar enigma_lw_r
 | OS/tool             | Version               | License           | Source
 | ------------------- | --------------------- | ----------------- | -------------
 | ubuntu              | 24.04                 | [Creative Commons CC-BY-SA version 3.0 UK licence](https://ubuntu.com/legal/intellectual-property-policy) | [Ubuntu.com](https://ubuntu.com)
-| Miniforge3          | 26.1.1-3              | [BSD-3-Clause](https://github.com/conda-forge/miniforge/blob/main/LICENSE) | [MiniForge3](https://github.com/conda-forge/miniforge)
-| python              | 3.13.12               | [PSF](https://docs.python.org/3.10/license.html) | [Python.org](https://www.python.org)
+| R                   | 4.5.3                 | [Misc.](hhttps://www.r-project.org/Licenses/) | [R](https://www.r-project.org)
 
 ## Building/rebuilding containers
 
-While we don't recommend building containers locally, it is possible.
+While we don't necessarily recommend building containers locally, it is possible.
 For instructions on how to build or rebuild containers manually using [Docker](https://www.docker.com) and [Singularity](https://docs.sylabs.io) refer to [`<enigma_lw_r>/docker/README.md`](https://github.com/precimed/enigma_lw_r/blob/main/docker/README.md).
 
 ## Unit tests
@@ -192,7 +172,7 @@ The Docker container is assumed to be available and tagged as `ghcr.io/precimed/
 ```bash
 # (optional) make sure that the container is available; tagged as "latest"
 docker pull --platform=linux/amd64 ghcr.io/precimed/enigma_lw_r:<tag>
-docker image tag ghcr.io/precimed/enigma_lw_r:0.1.0rc8 ghcr.io/precimed/enigma_lw_r:latest
+docker image tag ghcr.io/precimed/enigma_lw_r:0.1.0 ghcr.io/precimed/enigma_lw_r:latest
 ```
 
 ### WDL
