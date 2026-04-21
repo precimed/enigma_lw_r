@@ -15,6 +15,6 @@ task hello_world {
     }
 
     runtime {
-        docker: "ghcr.io/precimed/container_template" 
+        docker: "ghcr.io/precimed/enigma_lw_r" 
     }
 }

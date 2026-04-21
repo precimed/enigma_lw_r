@@ -1,4 +1,4 @@
-# Copilot instructions for `precimed/container_template`
+# Copilot instructions for `precimed/enigma_lw_r`
 
 ## Repository purpose
 - This repository is a reusable template for containerized projects (Docker/Singularity/Apptainer) and workflow scaffolding.

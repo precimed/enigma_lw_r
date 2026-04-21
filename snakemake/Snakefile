@@ -4,7 +4,7 @@ rule hello_world:
     output:
         output_file="hello_world.txt"
     singularity:
-        "docker://ghcr.io/precimed/container_template"
+        "docker://ghcr.io/precimed/enigma_lw_r"
     shell:
         """
         python3 {input.input_file} > {output.output_file}

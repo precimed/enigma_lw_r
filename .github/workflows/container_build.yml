@@ -10,7 +10,7 @@ on:
     tags:
       - "v*.*.*"
 env:
-  LATEST_TAG: ghcr.io/precimed/container_template:latest
+  LATEST_TAG: ghcr.io/precimed/enigma_lw_r:latest
 
 jobs:
   docker:
@@ -23,7 +23,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            ghcr.io/${{ github.repository_owner }}/container_template            
+            ghcr.io/${{ github.repository_owner }}/enigma_lw_r            
           tags: |
             type=schedule
             type=ref,event=branch
@@ -53,7 +53,7 @@ jobs:
           load: true
           tags: ${{ env.LATEST_TAG }}
           file:
-            ./dockerfiles/container_template/Dockerfile
+            ./dockerfiles/enigma_lw_r/Dockerfile
           platforms: linux/amd64
 
       - name: Run unit tests I
@@ -84,5 +84,5 @@ jobs:
           push: False
           tags: ${{ steps.meta.outputs.tags }}
           file:
-            ./dockerfiles/container_template/Dockerfile
+            ./dockerfiles/enigma_lw_r/Dockerfile
           platforms: linux/amd64,linux/arm64

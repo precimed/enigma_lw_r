@@ -19,7 +19,7 @@ if __name__ == '__main__':
 
     # old variables which will be renamed
     OLDNAME = 'precimed'
-    OLDPROJECT = 'container_template'
+    OLDPROJECT = 'enigma_lw_r'
 
     while True:
         response = input('Is this correct (yes/no)? ')

@@ -1,4 +1,4 @@
-name: container_template
+name: enigma_lw_r
 channels:
   - conda-forge
   - defaults

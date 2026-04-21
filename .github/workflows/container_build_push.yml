@@ -6,7 +6,7 @@ on:
       - "v*.*.*"
 
 env:
-  LATEST_TAG: ghcr.io/precimed/container_template:latest
+  LATEST_TAG: ghcr.io/precimed/enigma_lw_r:latest
 
 jobs:
   docker:
@@ -20,7 +20,7 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            ghcr.io/${{ github.repository_owner }}/container_template       
+            ghcr.io/${{ github.repository_owner }}/enigma_lw_r       
           tags: |
             type=schedule
             type=ref,event=branch
@@ -50,7 +50,7 @@ jobs:
           load: true
           tags: ${{ env.LATEST_TAG }}
           file:
-            ./dockerfiles/container_template/Dockerfile
+            ./dockerfiles/enigma_lw_r/Dockerfile
 
       - name: Run unit tests I
         run: |
@@ -81,7 +81,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           file:
-            ./dockerfiles/container_template/Dockerfile
+            ./dockerfiles/enigma_lw_r/Dockerfile
           platforms: linux/amd64,linux/arm64
 
   build-apptainer-container:
@@ -107,7 +107,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            ghcr.io/${{ github.repository_owner }}/container_template            
+            ghcr.io/${{ github.repository_owner }}/enigma_lw_r            
           tags: |
             type=schedule
             type=ref,event=branch
@@ -125,9 +125,9 @@ jobs:
           IFS= read -r first_tag <<EOF
           $tags
           EOF
-          push_tags="$(printf $csv_tags | sed -e "s/container_template/container_template_sif/g")"
+          push_tags="$(printf $csv_tags | sed -e "s/enigma_lw_r/enigma_lw_r_sif/g")"
           echo ${{ secrets.GITHUB_TOKEN }} | oras login --username ${{ github.repository_owner }} --password-stdin ghcr.io
-          apptainer build container_template.sif docker://"$first_tag"
-          oras push "$push_tags" container_template.sif
-          rm container_template.sif
+          apptainer build enigma_lw_r.sif docker://"$first_tag"
+          oras push "$push_tags" enigma_lw_r.sif
+          rm enigma_lw_r.sif
         shell: sh

@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to `container_template`'s documentation!
+Welcome to `enigma_lw_r`'s documentation!
 ================================================
 
 .. toctree::
